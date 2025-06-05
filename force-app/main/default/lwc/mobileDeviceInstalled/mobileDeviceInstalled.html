@@ -1,0 +1,99 @@
+<!--
+  @description       : 
+  @author            : Matheus Romano
+  @group             : 
+  @last modified on  : 07-21-2024
+  @last modified by  : Matheus Romano
+-->
+<template>
+    <lightning-card class="slds-is-relative">
+      <template if:true={showSpinner}>
+        <div class="slds-m-vertical_medium">
+          <lightning-spinner
+            alternative-text="Loading"
+            size="large"
+          ></lightning-spinner>
+        </div>
+      </template>
+        <div class="slds-scrollable_x">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped slds-table_fixed-layout"
+                    lwc:if={recordsAvailable} >
+                    <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div title="Model">Model</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div title="Serial Number">Serial Number</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div title="TID">TID</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div title="Status">Installed</div>
+                        </th>
+                        <th class="slds-cell-wrap" scope="col">
+                            <div title="Reason">Not Installed Reason</div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <template for:each={records} for:item="device">
+                        <tr key={device.id} class="slds-hint-parent">
+                            <td data-label="Model">
+                                <div title={device.model}>{device.model}</div>
+                            </td>
+                            <td data-label="Serial Number">
+                                <div title={device.serialNumber}>
+                                {device.serialNumber}
+                                </div>
+                            </td>
+                            <td data-label="TID">
+                                <div title={device.tid}>
+                                {device.tid}
+                                </div>
+                            </td>
+                            <td data-label="Installed">
+                                <lightning-input
+                                type="checkbox" 
+                                name="Installed"
+                                checked={device.installed}
+                                value={device.installed}
+                                data-id={device.returnLineItemId}
+                                onchange={handleInstalledChange}
+                                disabled={device.installedDisabled}
+                                ></lightning-input>
+                            </td>
+                            <td data-label="Reason">
+                                <lightning-combobox
+                                name="reason"
+                                value={device.reason}
+                                options={reasons}
+                                data-id={device.returnLineItemId}
+                                onchange={handleReasonChange}
+                                disabled={device.reasonDisabled}
+                                ></lightning-combobox>
+                            </td>
+                        </tr>
+                    </template>
+                    </tbody>
+                    </table>
+
+                <template lwc:else>
+                <h3 class="slds-text-align_center slds-var-m-vertical_medium">
+                    <p class="slds-text-title">No records available to display.</p>
+                </h3>
+                </template>
+        </div>
+        <div slot="footer">
+            <lightning-button
+                variant="brand-outline"
+                label="Save Changes"
+                title="save"
+                onclick={handleSaveChanges}
+                class="slds-var-m-around_small slds-align_absolute-center"
+                lwc:if={_recordsUpdatable}>
+            </lightning-button>
+        </div>
+    </lightning-card>
+</template>

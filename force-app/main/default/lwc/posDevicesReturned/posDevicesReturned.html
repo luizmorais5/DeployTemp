@@ -1,0 +1,151 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-horizontal_medium">
+            <!-- Tab Selection -->
+            <div class="slds-m-bottom_medium">
+                <lightning-radio-group
+                    name="tabSelection"
+                    label="Select View"
+                    options={tabOptions}
+                    value={activeTab}
+                    onchange={handleTabChange}
+                    type="button"
+                ></lightning-radio-group>
+            </div>
+
+            <!-- Top Right Controls -->
+            <div class="slds-grid slds-gutters slds-m-bottom_medium slds-grid_align-end">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                    <lightning-input
+                        type="search"
+                        label="Search Devices"
+                        placeholder="Search by Serial Number, TID, Merchant Name, or Model"
+                        value={searchTerm}
+                        onchange={handleSearch}
+                        variant="label-hidden"
+                    ></lightning-input>
+                </div>
+                <div class="slds-col slds-no-flex" lwc:if={showAcceptedColumn}>
+                    <lightning-button
+                        label={confirmButtonLabel}
+                        variant="brand"
+                        onclick={handleConfirmAcceptance}
+                        disabled={disableConfirmButton}
+                        class="slds-m-left_small"
+                    ></lightning-button>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <div class="slds-m-vertical_medium">
+                    <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- Error Message -->
+            <template if:true={error}>
+                <div class="slds-m-vertical_medium">
+                    <div class="slds-notify slds-notify_alert slds-theme_error" role="alert">
+                        <span class="slds-assistive-text">Error</span>
+                        <h2>Error loading devices: {error.body.message}</h2>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Data Table -->
+            <template if:true={hasDevices}>
+                <div class="slds-m-vertical_medium">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="slds-text-title_caps slds-truncate" scope="col">
+                                    Serial Number
+                                </th>
+                                <th class="slds-text-title_caps slds-is-sortable" scope="col" data-field="model">
+                                    Model
+                                </th>
+                                <th class="slds-text-title_caps slds-is-sortable" scope="col" data-field="tid">
+                                    TID
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    SIM Card 1
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    SIM Card 2
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    Case ID
+                                </th>
+                                <th class="slds-text-title_caps slds-is-sortable" scope="col" data-field="merchantName">
+                                    Merchant Name
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    Merchant Address
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    Bank Name
+                                </th>
+                                <th class="slds-text-title_caps" scope="col" lwc:if={showAcceptedColumn}>
+                                    Accepted
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={filteredDevices} for:item="device">
+                                <tr key={device.id} class={device.rowClass}>
+                                    <td class="slds-truncate">
+                                        {device.serialNumber}
+                                    </td>
+                                    <td class="slds-truncate">
+                                        {device.model}
+                                    </td>
+                                    <td class="slds-truncate">
+                                        {device.tid}
+                                    </td>
+                                    <td class="slds-truncate">
+                                        {device.simCard1}
+                                    </td>
+                                    <td class="slds-truncate">
+                                        {device.simCard2}
+                                    </td>
+                                    <td class="slds-truncate">
+                                        {device.caseNumber}
+                                    </td>
+                                    <td class="slds-truncate">
+                                        {device.merchantName}
+                                    </td>
+                                    <td class="slds-truncate">
+                                        {device.merchantAddress}
+                                    </td>
+                                    <td class="slds-truncate">
+                                        {device.bankName}
+                                    </td>
+                                    <td class="slds-truncate" lwc:if={showAcceptedColumn}>
+                                        <lightning-input
+                                            type="checkbox"
+                                            checked={device.accepted}
+                                            onchange={handleAcceptedChange}
+                                            data-id={device.id}
+                                            variant="label-hidden"
+                                        ></lightning-input>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+
+            <!-- No Data Message -->
+            <template lwc:if={showNoDataMessage}>
+                <div class="slds-m-vertical_large slds-text-align_center" style="margin: 8vh 0;">
+                    <h3 class="slds-text-heading_medium">{noDataMessage}</h3>
+                    <p class="slds-text-body_regular">
+                        {noDataDescription}
+                    </p>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

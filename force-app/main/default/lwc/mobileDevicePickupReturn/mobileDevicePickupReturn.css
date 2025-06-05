@@ -1,0 +1,9 @@
+.slds-table td div {
+    white-space: normal; /* Allows text wrapping */
+    word-wrap: normal; /* Ensures long words break */
+  }
+
+  /* Adjust column width for specific columns if necessary */
+  th, td {
+    width: 200px; /* Adjust as needed */
+  }
