@@ -1,0 +1,124 @@
+<!--
+  @description       : 
+  @author            : Matheus Silva
+  @last modified on  : 07-17-2024
+  @last modified by  : Matheus Silva
+-->
+<template>
+  <lightning-card class="slds-is-relative" title="Device Pickup and Return">
+    <template if:true={showSpinner}>
+      <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+    </template>
+      <div class="slds-scrollable_x">
+          <template lwc:if={recordsAvailable}>
+              <table
+                  class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped slds-table_fixed-layout"
+              >
+                  <thead>
+                      <tr class="slds-line-height_reset">
+                          <th scope="col">
+                              <div title="Bank Name">Bank Name</div>
+                          </th>
+                          <th scope="col">
+                              <div title="Merchant Name">Merchant Name</div>
+                          </th>
+                          <th scope="col">
+                              <div title="Merchant Address">Merchant Address</div>
+                          </th>
+                          <th scope="col">
+                              <div title="TID">TID</div>
+                          </th>
+                          <th scope="col">
+                              <div title="Model">Model</div>
+                          </th>
+                          <th scope="col">
+                              <div title="Serial Number">Serial Number</div>
+                          </th>
+                          <template if:true={showPickedUp}>
+                              <th scope="col">
+                                  <div title="Picked Up">Picked Up</div>
+                              </th>
+                          </template>
+                          <template if:true={showReturned}>
+                              <th scope="col">
+                                  <div title="Returned">Returned</div>
+                              </th>
+                          </template>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <template for:each={records} for:item="device">
+                          <tr key={device.id} class="slds-hint-parent">
+                              <td data-label="Bank Name">
+                                  <div class="slds-truncate" title={device.bankName}>
+                                      {device.bankName}
+                                  </div>
+                              </td>
+                              <td data-label="Merchant Name">
+                                  <div class="slds-truncate" title={device.merchantName}>
+                                      {device.merchantName}
+                                  </div>
+                              </td>
+                              <td data-label="Merchant Address">
+                                  <div class="slds-truncate" title={device.merchantAddress}>
+                                      {device.merchantAddress}
+                                  </div>
+                              </td>
+                              <td data-label="TID">
+                                  <div class="slds-truncate" title={device.tid}>
+                                      {device.tid}
+                                  </div>
+                              </td>
+                              <td data-label="Model">
+                                  <div class="slds-truncate" title={device.model}>
+                                      {device.model}
+                                  </div>
+                              </td>
+                              <td data-label="Serial Number">
+                                  <div class="slds-truncate" title={device.serialNumber}>
+                                      {device.serialNumber}
+                                  </div>
+                              </td>
+                              <template if:true={showPickedUp}>
+                                  <td data-label="Picked Up">
+                                      <lightning-input
+                                          type="checkbox"
+                                          checked={device.pickedUp}
+                                          data-id={device.id}
+                                          onchange={handlePickedUpChange}
+                                      ></lightning-input>
+                                  </td>
+                              </template>
+                              <template if:true={showReturned}>
+                                  <td data-label="Returned">
+                                      <lightning-input
+                                          type="checkbox"
+                                          checked={device.returned}
+                                          data-id={device.id}
+                                          onchange={handleReturnedChange}
+                                      ></lightning-input>
+                                  </td>
+                              </template>
+                          </tr>
+                      </template>
+                  </tbody>
+              </table>
+          </template>
+          <template lwc:elseif={noRecords}>
+              <h3 class="slds-text-align_center slds-var-m-vertical_medium">
+                  <p class="slds-text-title">No records available to display.</p>
+              </h3>
+          </template>
+      </div>
+      <div slot="footer" class="slds-m-around_medium slds-align_absolute-center">
+          <template if:true={_recordsUpdatable}>
+              <lightning-button
+                  variant="brand-outline"
+                  label="Save Changes"
+                  title="Save"
+                  onclick={handleSaveChanges}
+              ></lightning-button>
+          </template>
+      </div>
+  </lightning-card>
+</template>

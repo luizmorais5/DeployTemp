@@ -1,0 +1,7 @@
+.slds-combobox {
+    position: relative;
+}
+.slds-listbox {
+    max-height: none !important;
+    overflow: hidden !important;
+}

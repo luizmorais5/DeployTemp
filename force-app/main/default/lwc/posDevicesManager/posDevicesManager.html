@@ -1,0 +1,48 @@
+<template>
+    <lightning-card title="Access Restricted">
+        <div class="slds-p-horizontal_medium">
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <div class="slds-m-vertical_medium">
+                    <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- Message for dual-role users (Scenario 2) -->
+            <template if:true={shouldShowDualRoleMessage}>
+                <div class="slds-m-vertical_large slds-text-align_center">
+                    <div class="slds-notify slds-notify_alert slds-theme_info" role="alert">
+                        <span class="slds-assistive-text">Info</span>
+                        <p class="slds-m-top_small">
+                            As a Service Resource with both Programmer and Logistician roles, 
+                            you do not need to use the transfer and receiving processes. 
+                            These views are not available for dual-role users.
+                        </p>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Views for non-dual-role users -->
+            <template if:true={shouldShowViews}>
+                <div class="slds-m-bottom_medium">
+                    <lightning-radio-group
+                        name="tabSelection"
+                        label="Select View"
+                        options={tabOptions}
+                        value={activeTab}
+                        onchange={handleTabChange}
+                        type="button"
+                    ></lightning-radio-group>
+                </div>
+
+                <template if:true={isProgrammedTabActive}>
+                    <c-programmed-pos-devices></c-programmed-pos-devices>
+                </template>
+
+                <template if:true={isReceivedTabActive}>
+                    <c-received-programmed-pos-devices></c-received-programmed-pos-devices>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

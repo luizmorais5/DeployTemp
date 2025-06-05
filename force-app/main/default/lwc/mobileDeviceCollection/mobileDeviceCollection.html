@@ -1,0 +1,89 @@
+<!--
+  @description       : 
+  @author            : Remario Richards
+  @group             : 
+  @last modified on  : 12-05-2023
+  @last modified by  : Remario Richards
+-->
+<template>
+    <lightning-card class="slds-is-relative">
+      <template if:true={showSpinner}>
+        <lightning-spinner
+          alternative-text="Loading"
+          size="large"
+        ></lightning-spinner>
+      </template>
+      <table
+        class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped"
+        lwc:if={recordsAvailable}
+      >
+        <thead>
+          <tr class="slds-line-height_reset">
+            <th class="" scope="col">
+              <div class="slds-truncate" title="Device Name">Device Name</div>
+            </th>
+            <th class="" scope="col">
+              <div class="slds-truncate" title="Serial Number">Serial Number</div>
+            </th>
+            <th class="" scope="col">
+              <div class="slds-truncate" title="Sim Card 1">Sim Card 1</div>
+            </th>
+            <th class="" scope="col">
+              <div class="slds-truncate" title="Sim Card 2">Sim Card 2</div>
+            </th>
+            <th class="" scope="col">
+              <div class="slds-truncate" title="Status">Status</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={records} for:item="device">
+            <tr key={device.id} class="slds-hint-parent">
+              <td data-label="Device Name">
+                <div class="slds-truncate" title={device.name}>{device.name}</div>
+              </td>
+              <td data-label="Serial Number">
+                <div class="slds-truncate" title={device.serialNumber}>
+                  {device.serialNumber}
+                </div>
+              </td>
+              <td data-label="Sim Card 1">
+                <div class="slds-truncate" title={device.simCard1Name}>
+                  {device.simCard1Name}
+                </div>
+              </td>
+              <td data-label="Sim Card 2">
+                <div class="slds-truncate" title={device.simCard2Name}>
+                  {device.simCard2Name}
+                </div>
+              </td>
+              <td data-label="Status">
+                <lightning-combobox
+                  name="status"
+                  value={device.status}
+                  options={statuses}
+                  data-id={device.returnLineItemId}
+                  onchange={handleStatusChange}
+                ></lightning-combobox>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+      <template lwc:else>
+        <h3 class="slds-text-align_center slds-var-m-vertical_medium">
+          <p class="slds-text-title">No records available to display.</p>
+        </h3>
+      </template>
+      <div slot="footer">
+        <lightning-button
+          variant="brand-outline"
+          label="Save Changes"
+          title="save"
+          onclick={handleSaveChanges}
+          class="slds-var-m-around_small slds-align_absolute-center"
+          lwc:if={_recordsUpdatable}
+        ></lightning-button>
+      </div>
+    </lightning-card>
+  </template>

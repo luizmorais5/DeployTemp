@@ -1,0 +1,60 @@
+<!--
+  @description       : 
+  @author            : Remario Richards
+  @group             : 
+  @last modified on  : 11-23-2023
+  @last modified by  : Remario Richards
+-->
+<template>
+  <lightning-card class="slds-is-relative">
+    <template if:true={showSpinner}>
+      <lightning-spinner
+        alternative-text="Loading"
+        size="large"
+      ></lightning-spinner>
+    </template>
+    <div class="slds-var-m-around_small">
+      <c-lookup-lwc 
+      unique-key="" 
+      obj-name="WorkOrder"
+      icon-name="standard:work_order"
+      label-name="Work Order"
+      display-fields="WorkOrderNumber,Id"
+      display-format="WorkOrderNumber"
+      query-field="WorkOrderNumber"
+      placeholder="Search work orders"
+      onvalueselect={handleWorkOrderSelection}
+      value-id="">
+  </c-lookup-lwc>
+    </div>
+    <template lwc:if={recordsAvailable}>
+      <div class="slds-grid slds-gutters slds-grid_align-center">
+        <div class="slds-col slds-size_12-of-12">
+          <c-custom-data-table
+            key-field="id"
+            data={records}
+            columns={columns}
+            onpicklistchanged={handlePicklistchanged}
+            hide-checkbox-column
+          >
+          </c-custom-data-table>
+        </div>
+      </div>
+    </template>
+    <template lwc:else>
+      <h3 class="slds-text-align_center slds-var-m-vertical_medium">
+        <p>No records available to display.</p>
+      </h3>
+    </template>
+    <div slot="footer">
+      <lightning-button
+        variant="brand-outline"
+        label="Save Changes"
+        title="save"
+        onclick={handleSaveChanges}
+        class="slds-var-m-around_small"
+        if:true={_recordsUpdatable}
+      ></lightning-button>
+    </div>
+  </lightning-card>
+</template>

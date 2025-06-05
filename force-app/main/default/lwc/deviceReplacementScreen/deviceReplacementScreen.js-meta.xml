@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="flowGUID" label="The flow interview id" type="String" role="inputOnly" />
+            <property name="accountId" label="Provided By Account Id" type="String" role="inputOnly" />
+            <property name="accountIds" label="Provided Assets" type="String[]" role="inputOnly" />
+            <property name="recordsToUpdate" label="AssetsToUpdate" type="String" role="outputOnly" />
+            <property name="recordsToUpdate2" label="AssetsToUpdate" type="apex://AssetWrapper" role="outputOnly" />
+            <property name="updatedAssets" label="Updated AssetsToUpdate" type="apex://AssetWrapper" role="outputOnly" />
+            <property name="updatedRecords" label="Updated Assets" type="apex://AssetWrapper[]" role="outputOnly" />
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

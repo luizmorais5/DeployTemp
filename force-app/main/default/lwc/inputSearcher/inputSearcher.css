@@ -1,0 +1,14 @@
+.lookup-section{
+    margin-top: 0.6rem;
+
+
+    z-index: 9999999999999999999999;
+    max-height: 120px;
+}
+ 
+.lookup-section .slds-dropdown{
+    position: fixed !important;
+    max-height: 120px;
+    max-width: fit-content;
+    overflow: auto;
+}

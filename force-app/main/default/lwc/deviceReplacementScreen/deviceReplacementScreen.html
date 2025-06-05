@@ -1,0 +1,79 @@
+<!--
+  @description       : 
+  @author            : Remario Richards
+  @group             : 
+  @last modified on  : 02-26-2024
+  @last modified by  : Remario Richards
+-->
+<template>
+
+
+<lightning-card class="slds-is-relative">
+
+  <div class="slds-grid  slds-gutters slds-grid_align-center">
+    <div class="slds-col slds-size_6-of-12">
+      <h1 class="slds-var-m-around_small">Devices</h1>
+      <template if:true={recordsAvailable}>
+        <lightning-datatable
+        key-field="id"
+        data={records} 
+        columns={columns}
+        onrowselection={handleRowSelection}
+        selected-rows={selected}
+      >
+      </lightning-datatable>
+      </template>
+
+    <template if:false={recordsAvailable}>
+      <h3 class="slds-text-align_center slds-var-m-vertical_medium">
+        <p>No records available to display.</p>
+      </h3>
+    </template>
+    </div>
+    <div class="slds-col slds-size_6-of-12" >
+      <h1 class="slds-var-m-around_small">Information</h1>
+      <template lwc:if={canShowEditTable}>
+        <c-custom-data-table 
+        key-field="id" 
+        data={editTableData} 
+        columns={editTableColumns}
+        onvalueselect={handleRecordSelection}
+        onsave={handleSave} 
+        draft-values={draftValues}
+        hide-checkbox-column>
+      </c-custom-data-table>
+      </template>
+      <template lwc:else>
+        <h3 class="slds-text-align_center slds-var-m-vertical_medium">
+          <p>No records available to display. Please select records from the left table.</p>
+        </h3>
+      </template>
+    </div>
+  </div>
+  
+  <div slot="footer">
+    <hr class="solid">
+    <div class="slds-grid slds-grid_vertical-align-end slds-gutters_xx-small">
+      <div class="slds-col slds-size_10-of-12">
+        <lightning-button class="slds-m-top_small slds-float_left" variant="neutral" type="submit" name="save" label="Save Form" onclick={handleSaveButton}>
+        </lightning-button>
+      </div>
+
+      <div class="slds-col slds-size_2-of-12">
+        <div class="slds-grid slds-grid_align-end">
+          <div class="slds-col">
+            <lightning-button class="slds-m-top_small" variant="neutral" type="submit" name="previous" label="Previous" onclick={handlePreviousButton}>
+            </lightning-button>
+          </div>
+
+          <div class="slds-col ">
+            <lightning-button class="slds-m-top_small" variant="brand" type="submit" name="next" label="Next" onclick={handleNextButton}>
+            </lightning-button>
+          </div>
+        </div>    
+      </div>
+      </div>
+  </div>
+</lightning-card>
+
+</template>
